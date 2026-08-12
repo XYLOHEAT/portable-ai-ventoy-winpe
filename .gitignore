@@ -1,0 +1,22 @@
+# Vendor binaries and downloaded applications
+apps/*
+!apps/.gitkeep
+*.exe
+*.dll
+*.zip
+*.tar.gz
+*.tgz
+*.iso
+*.wim
+
+# Credentials, configuration, transcripts, and user work
+data/
+workspaces/*
+!workspaces/.gitkeep
+
+# OS metadata
+.DS_Store
+._*
+Thumbs.db
+System Volume Information/
+$RECYCLE.BIN/
