@@ -1,31 +1,53 @@
 # Portable AI for Ventoy / WinPE
 
-Unofficial portable launchers for running native Windows AI coding agents from a Ventoy USB drive in a 64-bit Windows PE environment. Supported agents are OpenAI Codex CLI, Anthropic Claude Code, OpenCode, Crush, and Goose. A portable MinGit runtime is included by the updater for Git operations.
+[Download the latest Lite bundle](https://github.com/XYLOHEAT/portable-ai-ventoy-winpe/releases/tag/multi-2026.08.12) · [Third-party notices](THIRD-PARTY-NOTICES.md) · [Security policy](SECURITY.md)
 
-This repository is intentionally **binary-free**. The updater downloads each CLI directly from its official vendor release server and verifies its SHA-256 checksum against official release metadata.
+Unofficial portable launchers for running native Windows AI coding agents from a Ventoy USB drive in a 64-bit Windows PE environment. The menu supports OpenAI Codex CLI, Anthropic Claude Code, OpenCode, Crush, and Goose, with portable MinGit for Git operations.
+
+This public repository is intentionally **binary-free**. The updater retrieves each CLI from its official release server, verifies SHA-256 against official release metadata, and installs it under `apps/`.
 
 > [!WARNING]
-> Windows PE is a recovery/deployment environment, not a general-purpose operating system. Compatibility is best-effort. Native Windows agents may have direct access to every mounted disk. Claude Code has no native Windows OS sandbox, Codex EDIT disables its OS sandbox, and the community agents rely mainly on permission prompts. Review every command before approving it.
+> Windows PE is a recovery/deployment environment, not a general-purpose operating system. Compatibility is best-effort. Agents may have direct access to every mounted disk. Claude Code has no native Windows OS sandbox, Codex EDIT disables its OS sandbox, and the community agents rely mainly on permission prompts. Review every command before approving it.
 
-## Features
+## Download
 
-- Drive-letter independent: launchers resolve paths relative to the USB folder.
-- Persistent USB profiles for configuration, login state, and sessions.
-- Codex SAFE/EDIT, Claude PLAN/MANUAL, and OpenCode PLAN/BUILD launch modes.
-- Crush and Goose multi-provider sessions.
-- Portable MinGit available to agents and the workspace.
-- Device-code login for Codex.
-- Official downloads with SHA-256 verification.
-- No modification of Ventoy, ISO, WIM, or WinPE images.
+The public [Multi-agent Lite release](https://github.com/XYLOHEAT/portable-ai-ventoy-winpe/releases/tag/multi-2026.08.12) contains the launchers, verified updater, documentation, and empty portable directory structure. It does not contain third-party executables.
+
+- File: `PortableAI-Ventoy-WinPE-LITE-MULTI.zip`
+- Size: 22,682 bytes
+- SHA-256: `9b3de275a9118e4b92bb19e9b945922686d3a27748114d7b7654f0dd6c27db2f`
+
+READY packages that embed downloaded executables are intentionally not published in this public repository. Build one locally by running the updater on full Windows.
+
+## Included launch modes
+
+| Tool | Menu modes | Intended use |
+| --- | --- | --- |
+| Codex CLI | SAFE / EDIT | Start sandboxed where supported, or use the WinPE compatibility fallback |
+| Claude Code | PLAN / MANUAL | Plan without edits, or approve changes manually |
+| OpenCode | PLAN / BUILD | Read-only planning or implementation mode |
+| Crush | ASK | Multi-provider TUI with permission prompts |
+| Goose CLI | SESSION | Configurable multi-provider agent session |
+| MinGit | Runtime | Portable Git available to agents and workspaces |
 
 ## Install
 
-1. Download or clone this repository onto a normal Windows 10/11 x64 or ARM64 computer.
+1. Download and extract the Lite release, or clone this repository, on a normal Windows 10/11 x64 or ARM64 computer.
 2. Run `Update-PortableAI.cmd` while connected to the internet.
-3. Copy the whole folder to the large data partition of your Ventoy USB drive.
+3. Copy the complete `PortableAI-Ventoy` folder to the large data partition of the Ventoy USB drive.
 4. Boot a recent 64-bit WinPE build and connect to the network.
-5. Run `PortableAI.cmd` from the USB drive.
+5. Open the USB folder and run `PortableAI.cmd`.
 6. Start with **Codex SAFE**, **Claude PLAN**, or **OpenCode PLAN**.
+
+The updater installs all components by default. A single component can be selected from Command Prompt:
+
+```bat
+Update-PortableAI.cmd -Component OpenCode
+Update-PortableAI.cmd -Component Codex
+Update-PortableAI.cmd -Component All
+```
+
+Supported component names are `All`, `Codex`, `Claude`, `OpenCode`, `Crush`, `Goose`, and `MinGit`. Claude uses its stable channel by default; use `-ClaudeChannel latest` only when you explicitly want the latest channel.
 
 The updater uses these official endpoints:
 
@@ -36,50 +58,58 @@ The updater uses these official endpoints:
 - Goose CLI: <https://github.com/aaif-goose/goose/releases>
 - MinGit: <https://github.com/git-for-windows/git/releases>
 
+## Portable folders
+
+| Path | Purpose | Safe to publish? |
+| --- | --- | --- |
+| `apps/` | Downloaded executables and runtimes | No; excluded from this repository |
+| `data/` | Logins, provider configuration, caches, and sessions | **Never**; may contain secrets |
+| `workspaces/` | Projects opened by the agents | Only after reviewing their contents |
+| `licenses/` | Third-party license copies | Yes |
+
+The launcher redirects `HOME`, `USERPROFILE`, `APPDATA`, and tool-specific configuration paths into `data/`, so profiles remain on the USB instead of being written to the WinPE RAM disk.
+
 ## Authentication
 
 - Choose **Codex login** to use the device-code flow.
-- Choose **Claude login** to use Anthropic's browser flow. If WinPE cannot open the browser, run the portable folder and log in once from full Windows before booting WinPE.
-- Choose **OpenCode provider login** to configure any supported model provider.
+- Choose **Claude login** to use Anthropic's browser flow. If WinPE cannot open the browser, log in once from full Windows using the same portable folder.
+- Choose **OpenCode provider login** to configure a supported model provider.
 - Choose **Goose configure provider** before starting the first Goose session.
-- Crush prompts for a provider/API key on first launch. Temporary provider keys can also be supplied through environment variables.
-- Credentials and session history are stored under `data/` on the USB drive.
+- Crush prompts for a provider/API key on first launch.
 
-Ventoy data partitions commonly use exFAT, which does not provide Windows per-user ACL protection. Anyone holding the USB may be able to read credentials or session transcripts. Log out before lending the drive, revoke tokens if the drive is lost, and delete `data/` after logout if you do not need prior sessions.
+Ventoy data partitions commonly use exFAT, which does not provide Windows per-user ACL protection. Anyone holding the USB may be able to read credentials or session transcripts. Log out before lending the drive, revoke tokens if it is lost, and remove `data/` after logout if prior sessions are not required.
 
-Never place API keys in the `.cmd` files. For temporary API-key use, set variables such as `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, or `OPENROUTER_API_KEY` only in the current terminal session.
+Never put API keys in `.cmd` files. For temporary API-key use, set variables such as `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, or `OPENROUTER_API_KEY` only in the current terminal session.
 
 ## Compatibility notes
 
 - Requires 64-bit Windows/WinPE and at least 4 GB RAM.
-- Claude Code supports native Windows but native Windows sandboxing is not available.
-- Codex publishes native Windows binaries, but WinPE is not an officially supported Codex environment.
-- OpenCode, Crush, and Goose publish native Windows binaries, but none officially list WinPE as a supported environment.
-- Goose currently has no native Windows ARM64 CLI release; the updater skips it on ARM64.
-- OpenCode falls back to `cmd.exe` when Git Bash is unavailable. MinGit supplies Git but not a full Bash runtime, so shell-heavy prompts may require Windows command syntax.
-- If Codex SAFE cannot initialize its Windows sandbox, Codex EDIT is the compatibility fallback. EDIT has direct access to mounted disks; approve commands carefully.
-- If a binary reports a missing DLL/API or cannot render its TUI, use a newer WinPE build. A Linux live ISO on the same Ventoy drive is the more reliable fallback.
+- WinPE is not officially supported by these agents; native Windows compatibility is best-effort.
+- Goose currently has no native Windows ARM64 CLI release, so the updater skips Goose on ARM64.
+- MinGit supplies Git but not a full Bash runtime. Shell-heavy prompts may require Windows command syntax.
+- If Codex SAFE cannot initialize its Windows sandbox, Codex EDIT is the compatibility fallback. EDIT can access mounted disks directly.
+- If a binary reports a missing DLL/API or cannot render its TUI, use a newer WinPE build. A Linux live ISO on the same Ventoy drive is a more reliable fallback.
 
 ## What is not included
 
-- Codex, Claude Code, OpenCode, Crush, Goose, or MinGit binaries
+- Agent or MinGit binaries
 - Ventoy
 - Sergei Strelec or any other WinPE/ISO distribution
 - Account credentials, API keys, or user sessions
 
 ## ภาษาไทย
 
-โปรเจกต์นี้เป็น launcher แบบ portable สำหรับเปิด Codex CLI, Claude Code, OpenCode, Crush และ Goose จากแฟลชไดรฟ์ Ventoy ภายใน WinPE x64 โดยไม่ฝัง binary ไว้ใน repository
+โปรเจกต์นี้เป็นเมนู portable สำหรับเปิด Codex CLI, Claude Code, OpenCode, Crush และ Goose จากแฟลชไดรฟ์ Ventoy ภายใน WinPE 64-bit โดย Public repository และไฟล์ Lite **ไม่มี binary ของโปรแกรมเหล่านี้**
 
-วิธีใช้สั้น ๆ:
+วิธีใช้แบบสั้น:
 
-1. ดาวน์โหลด repository บน Windows 10/11 ตัวเต็ม
+1. ดาวน์โหลด [Lite release ล่าสุด](https://github.com/XYLOHEAT/portable-ai-ventoy-winpe/releases/tag/multi-2026.08.12) แล้วแตกไฟล์บน Windows 10/11 ตัวเต็ม
 2. เปิด `Update-PortableAI.cmd` เพื่อดาวน์โหลด binary ทางการและตรวจ SHA-256
 3. คัดลอกทั้งโฟลเดอร์ลงพาร์ทิชันข้อมูลของ Ventoy
-4. บูต WinPE x64 ต่ออินเทอร์เน็ต แล้วเปิด `PortableAI.cmd`
+4. บูต WinPE 64-bit ต่ออินเทอร์เน็ต แล้วเปิด `PortableAI.cmd`
 5. เริ่มด้วย `Codex SAFE`, `Claude PLAN` หรือ `OpenCode PLAN`
 
-WinPE เข้าถึงดิสก์ที่ mount ได้ทั้งหมด ตรวจทุกคำสั่งก่อนอนุมัติ และอย่า commit โฟลเดอร์ `data` เพราะอาจมี token และประวัติ session
+ข้อมูลบัญชีและ session จะอยู่ใน `data/` บนแฟลช ห้าม commit หรือเผยแพร่โฟลเดอร์นี้ และควรตรวจทุกคำสั่งก่อนอนุมัติเพราะ WinPE มองเห็นดิสก์ที่ mount อยู่ทั้งหมด
 
 ## Legal
 
