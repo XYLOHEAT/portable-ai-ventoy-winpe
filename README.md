@@ -14,8 +14,8 @@ This public repository is intentionally **binary-free**. The updater retrieves e
 The public [Multi-agent Lite release](https://github.com/XYLOHEAT/portable-ai-ventoy-winpe/releases/tag/multi-2026.08.12) contains the launchers, verified updater, documentation, and empty portable directory structure. It does not contain third-party executables.
 
 - File: `PortableAI-Ventoy-WinPE-LITE-MULTI.zip`
-- Size: 22,682 bytes
-- SHA-256: `9b3de275a9118e4b92bb19e9b945922686d3a27748114d7b7654f0dd6c27db2f`
+- Size: 22,658 bytes
+- SHA-256: `7c39aa1478aa1307df03ed86c03a773187e52986b9ec077876805b418925615d`
 
 READY packages that embed downloaded executables are intentionally not published in this public repository. Build one locally by running the updater on full Windows.
 
@@ -94,7 +94,7 @@ Never put API keys in `.cmd` files. For temporary API-key use, set variables suc
 
 - Agent or MinGit binaries
 - Ventoy
-- Sergei Strelec or any other WinPE/ISO distribution
+- Any WinPE or ISO distribution
 - Account credentials, API keys, or user sessions
 
 ## ภาษาไทย
@@ -113,4 +113,4 @@ Never put API keys in `.cmd` files. For temporary API-key use, set variables suc
 
 ## Legal
 
-This community project is not affiliated with or endorsed by OpenAI, Anthropic, Anomaly, Charmbracelet, AAIF, Git for Windows, Ventoy, or Sergei Strelec. Product names are used only to describe compatibility. The scripts in this repository are MIT licensed. Third-party software downloaded by the updater remains subject to its vendor's terms and licenses; see [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
+This community project is not affiliated with or endorsed by OpenAI, Anthropic, Anomaly, Charmbracelet, AAIF, Git for Windows, or Ventoy. Product names are used only to describe compatibility. The scripts in this repository are MIT licensed. Third-party software downloaded by the updater remains subject to its vendor's terms and licenses; see [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).

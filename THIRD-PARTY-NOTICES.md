@@ -11,4 +11,4 @@ The updater can download the following software directly from its vendor:
 - **Goose** — upstream project: <https://github.com/aaif-goose/goose>; licensed under Apache-2.0 by its upstream authors.
 - **Git for Windows / MinGit** — upstream project: <https://github.com/git-for-windows/git>; includes Git and third-party components under their respective open-source licenses. The downloaded package contains its license notices.
 
-Ventoy, Sergei Strelec, Windows PE, OpenAI, Codex, Anthropic, Claude, OpenCode, Crush, Goose, and Git are names or marks of their respective owners. Their names are used only to identify compatibility and download sources. This project is not official and does not imply endorsement.
+Ventoy, Windows PE, OpenAI, Codex, Anthropic, Claude, OpenCode, Crush, Goose, and Git are names or marks of their respective owners. Their names are used only to identify compatibility and download sources. This project is not official and does not imply endorsement.

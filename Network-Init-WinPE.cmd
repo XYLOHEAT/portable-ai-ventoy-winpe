@@ -6,5 +6,5 @@ if exist "%SystemRoot%\System32\wpeinit.exe" wpeinit
 echo.
 ipconfig
 echo.
-echo If no adapter appears, use Sergei Strelec PENetwork and load the NIC driver.
+echo If no adapter appears, use the WinPE network utility and load the NIC driver.
 pause
